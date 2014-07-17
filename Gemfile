@@ -46,11 +46,15 @@ gem "rails_admin"
 gem "seo_helper"
 gem "open_graph_helper"
 
+gem 'roadie'
+
 gem "ultra_markdown"
 
 gem 'mailgun-rails'
 gem 'mailgun', :git => "https://github.com/HashNuke/mailgun.git"
 gem 'rails-bootstrap-markdown'
+
+gem "whenever"
 
 group :development do 
   gem "letter_opener"

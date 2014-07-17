@@ -6,6 +6,7 @@ APP_CONFIG = YAML.load(raw_config)
 require "./config/boot"
 require "bundler/capistrano"
 require "rvm/capistrano"
+require "whenever/capistrano"
 require "cape"
 
 
@@ -49,6 +50,9 @@ Cape do
     recipies.env['RAILS_ENV'] = rails_env
   end
 
+  mirror_rake_tasks :newspaper do |recipies|
+    recipies.env['RAILS_ENV'] = rails_env
+  end
 end
 
 namespace :deploy do

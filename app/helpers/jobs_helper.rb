@@ -9,6 +9,11 @@ module JobsHelper
     sanitize(job.description.to_markdown)
   end
 
+  def render_explore_job_desc(job)
+    if job.og_description.present?
+      content_tag(:p, job.og_description, :class => "job-desc")
+    end
+  end
 
   def render_job_apply_instruction(job)
     job.apply_instruction.to_markdown
@@ -18,6 +23,12 @@ module JobsHelper
     link_to(job.url, job.url)
   end
 
+  def render_job_warning(salary)
+    if salary < 35000
+      "[最低薪 < 35000 請自行斟酌是否應徵此公司]"
+    end
+  end
+  
   def render_job_salary(salary)
 
     special_label = if salary >= 200000

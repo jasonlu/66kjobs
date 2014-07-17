@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140713130632) do
+ActiveRecord::Schema.define(version: 20140717131128) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -20,11 +20,42 @@ ActiveRecord::Schema.define(version: 20140713130632) do
     t.datetime "updated_at"
   end
 
+  create_table "day_jobs", force: true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "location"
+    t.text     "apply_instruction"
+    t.date     "created_on"
+    t.date     "updated_on"
+    t.string   "company_name"
+    t.string   "url"
+    t.string   "email"
+    t.integer  "lower_bound"
+    t.integer  "higher_bound"
+    t.string   "token"
+    t.boolean  "is_published",       default: false
+    t.string   "ip"
+    t.boolean  "email_confirmed"
+    t.datetime "email_confirmed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "email_subscriptions", force: true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "email_subscriptions", ["token"], name: "index_email_subscriptions_on_token"
+
   create_table "jobs", force: true do |t|
     t.string   "title"
     t.text     "description"
     t.integer  "user_id"
-    t.integer  "category_id",                  default: 1
+    t.integer  "category_id",                   default: 1
     t.string   "location"
     t.text     "apply_instruction"
     t.date     "created_on"
@@ -38,7 +69,9 @@ ActiveRecord::Schema.define(version: 20140713130632) do
     t.integer  "higher_bound"
     t.string   "token"
     t.boolean  "is_published"
-    t.string   "ip",                limit: 30
+    t.string   "ip",                 limit: 30
+    t.boolean  "email_confirmed",               default: false
+    t.datetime "email_confirmed_at"
   end
 
   add_index "jobs", ["created_on"], name: "index_jobs_on_created_on"

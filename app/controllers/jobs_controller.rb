@@ -72,16 +72,25 @@ class JobsController < ApplicationController
   def publish
     @job = Job.find_by_token(params[:id])
 
-
-    ip_count = Job.where(:created_on => Date.today, :is_published => true, :ip => request.ip ).count
-
-    if ip_count > 1
-      flash[:error] = "一天不能張貼超過一則資訊"
-    else
-      PublishJobService.new(@job).perform! 
-    end
+    flash[:notice] = "感謝您刊登此資訊，我們會寄一封信件到您信箱確認您刊登 email 有效，等您驗證過後，職缺會立即刊登"
+    PublishJobService.new(@job).send_verfication_email!
 
     redirect_to root_path
+
+  end
+
+  def verify
+    @job = Job.find_by_token(params[:id])
+
+    if @job.verified?
+      flash[:error] = "你已經驗證過了"
+      redirect_to root_path
+    else
+      @job.verify!
+      PublishJobService.new(@job).publish! 
+      flash[:notice] = "驗證通過。您的職缺已順利刊登！"
+      redirect_to job_path(@job)
+    end
   end
 
   def final
